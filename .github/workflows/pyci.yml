@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install uv
-          make install dev
+          make install-dev
       - name: Run linter and pytest
         run: |
           make lint
