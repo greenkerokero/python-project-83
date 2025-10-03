@@ -1,6 +1,9 @@
 install:
 	uv sync
 
+install dev:
+	uv sync --dev
+
 lint:
 	ruff check
 
