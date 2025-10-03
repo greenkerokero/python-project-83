@@ -1,7 +1,7 @@
 install:
 	uv sync
 
-install dev:
+install-dev:
 	uv sync --dev
 
 lint:
