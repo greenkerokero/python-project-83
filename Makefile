@@ -1,5 +1,5 @@
 install:
-	uv sync
+	uvsync
 
 install-dev:
 	uv sync --dev
@@ -7,6 +7,6 @@ install-dev:
 lint:
 	ruff check
 
+IP ?= 192.168.0.200
 dev:
-	uv run flask --debug --app page_analyzer:app run --host=192.168.0.200 --port 5000
-
+	uv run flask --debug --app page_analyzer:app run --host=$(IP)
