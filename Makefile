@@ -1,5 +1,5 @@
 install:
-	uvsync
+	uv sync
 
 install-dev:
 	uv sync --dev
