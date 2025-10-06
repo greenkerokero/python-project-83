@@ -1,0 +1,12 @@
+.vscode/
+.venv/
+.pytest_cache/
+.coverage
+coverage.xml
+
+# Ignore package distributives
+dist/
+
+# Ignore pycache
+__pycache__
+*.pyc
