@@ -4,6 +4,7 @@
 .coverage
 coverage.xml
 .env
+*.zip
 
 # Ignore package distributives
 dist/
