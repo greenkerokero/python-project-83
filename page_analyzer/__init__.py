@@ -12,5 +12,6 @@ app = Flask(
 
 load_dotenv()
 app.config['SECRET_KEY'] = getenv('SECRET_KEY')
+app.config['DATABASE_URL'] = getenv('DATABASE_URL')
 
 init_routes(app)
