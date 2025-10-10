@@ -26,7 +26,7 @@ class UrlRepository:
             with conn.cursor() as cur:
                 cur.execute(
                     'UPDATE urls SET name = %s WHERE id = %s',
-                    (url['name'], url['id']),
+                    (url['url'], url['id']),
                 )
 
     def _create(self, url):
@@ -34,7 +34,7 @@ class UrlRepository:
             with conn.cursor() as cur:
                 cur.execute(
                     'INSERT INTO urls (name) VALUES (%s) RETURNING id',
-                    (url['name']),
+                    (url['url']),
                 )
                 id = cur.fetchone()[0]
                 url['id'] = id
