@@ -9,7 +9,7 @@ class UrlRepository:
     def get_connection(self):
         return connect(self.db_url)
 
-    def get_connect(self):
+    def get_all(self):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute('SELECT * FROM urls')
@@ -33,8 +33,8 @@ class UrlRepository:
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    'INSERT INTO urls (name) VALUES (%s) RETURNING id',
-                    (url['url']),
+                    'INSERT INTO urls (url) VALUES (%s) RETURNING id',
+                    (url['url'],),
                 )
                 id = cur.fetchone()[0]
                 url['id'] = id
