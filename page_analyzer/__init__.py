@@ -1,7 +1,7 @@
 from flask import Flask
 from os import getenv
 from dotenv import load_dotenv
-from .routes import init_routes
+from page_analyzer.routes import init_routes
 
 
 app = Flask(

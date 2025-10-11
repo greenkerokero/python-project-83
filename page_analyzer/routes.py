@@ -6,8 +6,8 @@ from flask import (
     redirect,
     url_for,
 )
-from .validator import validate
-from .repository import UrlRepository
+from page_analyzer.validator import validate
+from page_analyzer.repository import UrlRepository
 
 
 def init_routes(app):
@@ -37,4 +37,3 @@ def init_routes(app):
         repo.save(raw_url)
         flash('Страница успешно добавлена', 'success')
         return redirect(url_for('index'))  # изменить на контролер получения старницы с добавленным url
-        
