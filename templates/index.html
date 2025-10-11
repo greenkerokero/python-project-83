@@ -3,11 +3,11 @@
 {% block content %}
 
 {% if messages %}
-  <div class="alert alert-danger" role="alert">
   {% for category, message in messages %}
-    {{ message }}
+    <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}" role="alert">
+      {{ message }}
+    </div>
   {% endfor %}
-  </div>
 {% endif %}
 
   <div class="row">
