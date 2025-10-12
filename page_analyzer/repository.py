@@ -15,19 +15,28 @@ class UrlRepository:
                 cur.execute('SELECT * FROM urls')
                 return [dict(row) for row in cur]
 
+    def find(self, id):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("SELECT * FROM urls WHERE id = %s", (id,))
+                return cur.fetchone()
+
     def save(self, url):
+        print(url)
         if 'id' in url and url['id']:
-            self._update(url)
+            return self._update(url)
         else:
-            self._create(url)
+            return self._create(url)
 
     def _update(self, url):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    'UPDATE urls SET name = %s WHERE id = %s',
+                    'UPDATE urls SET url = %s WHERE id = %s',
                     (url['url'], url['id']),
                 )
+            conn.commit()
+            return url['id']
 
     def _create(self, url):
         with self.get_connection() as conn:
@@ -39,3 +48,4 @@ class UrlRepository:
                 id = cur.fetchone()[0]
                 url['id'] = id
             conn.commit()
+            return id
