@@ -21,6 +21,12 @@ class UrlRepository:
                 cur.execute("SELECT * FROM urls WHERE id = %s", (id,))
                 return cur.fetchone()
 
+    def find_by_url(self, url):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("SELECT * FROM urls WHERE url = %s", (url,))
+                return cur.fetchone()
+
     def save(self, url):
         print(url)
         if 'id' in url and url['id']:

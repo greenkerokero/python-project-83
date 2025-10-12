@@ -35,12 +35,19 @@ def init_routes(app):
     def urls_post():
         raw_url = request.form.to_dict()  # {'url': 'https://ya.ru'}
         url = raw_url['url']
+
         errors = validate(url)
         if errors:
             flash('Некорректный URL', 'fail')
             return (
                 redirect(url_for('index'))
             )
+
+        existing_url = repo.find_by_url(url)
+        if existing_url:
+            flash('Страница уже существует', 'info')
+            return redirect(url_for('urls_show', id=existing_url['id']))
+
         id = repo.save(raw_url)
         flash('Страница успешно добавлена', 'success')
         return redirect(url_for('urls_show', id=id))
