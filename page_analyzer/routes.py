@@ -6,6 +6,7 @@ from flask import (
     redirect,
     url_for,
 )
+from urllib.parse import urlparse
 from page_analyzer.validator import validate
 from page_analyzer.repository import UrlRepository
 
@@ -51,6 +52,9 @@ def init_routes(app):
                 messages=messages,
                 url=url,
             )
+
+        url = urlparse(url).netloc
+        raw_url['url'] = url
 
         existing_url = repo.find_by_url(url)
         if existing_url:
