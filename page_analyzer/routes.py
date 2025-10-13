@@ -21,12 +21,20 @@ def init_routes(app):
             messages=messages
         )
 
-    @app.route('/urls/<id>')
+    @app.get('/urls')
+    def urls_get():
+        urls = repo.get_all()
+        return render_template(
+            'urls/index.html',
+            urls=urls,
+        )
+
+    @app.get('/urls/<id>')
     def urls_show(id):
         messages = get_flashed_messages(with_categories=True)
         url_data = repo.find(id)
         return render_template(
-            'show.html',
+            'urls/show.html',
             url_data=url_data,
             messages=messages,
         )
