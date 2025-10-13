@@ -28,7 +28,6 @@ class UrlRepository:
                 return cur.fetchone()
 
     def save(self, url):
-        print(url)
         if 'id' in url and url['id']:
             return self._update(url)
         else:
