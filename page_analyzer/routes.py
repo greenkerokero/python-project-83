@@ -33,7 +33,7 @@ def init_routes(app):
         url_data = repo.find(id)
         return render_template(
             'urls/show.html',
-            url_data=url_data,
+            url=url_data,
             messages=messages,
         )
 
