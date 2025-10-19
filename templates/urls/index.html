@@ -5,7 +5,6 @@
     <div class="container-lg mt-3">
       <h1>Сайты</h1>
 
-    
       <div class="table-responsive">
         <table class="table table-bordered table-hover text-nowrap" data-test="urls">
           <thead>
@@ -19,18 +18,14 @@
           <tbody>
             {% for url in urls %}
               <tr>
-                <td>{{ url.id }}</td>
+                <td>{{ url['id'] }}</td>
                 <td>
-                  <a href="/urls/{{ url.id }}">
-                    {{ url.url }}
+                  <a href="{{ url_for('urls_show', id=url['id']) }}">
+                    {{ url['site'] }}
                   </a>
                 </td>
-                
+                <td>{{ url['last_check'] }}</td>
                 <td></td>
-                
-                
-                <td></td>
-                
               </tr>
             {% endfor %}
           </tbody>
