@@ -102,6 +102,24 @@ class UrlCheckRepository(BaseRepository):
                     return row['last_check']
                 return None
 
+    def get_last_check_code(self, url_id):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT *
+                    FROM url_checks
+                    WHERE url_id = %s
+                    ORDER BY created_at DESC
+                    LIMIT 1;
+                    ''',
+                    (url_id,),
+                )
+                row = cur.fetchone()
+                if row and row['status_code']:
+                    return row['status_code']
+                return None
+
     def save(self, url_checks):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
