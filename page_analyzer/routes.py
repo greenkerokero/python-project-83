@@ -27,17 +27,21 @@ def init_routes(app):
         urls = url_repo.get_all()
         sites = []
         for url in urls:
-            last_check = url_check_repo.get_last_check(url.get('id'))
-            if last_check:
-                last_check = last_check.strftime('%Y-%m-%d')
+            last_check_time = url_check_repo.get_last_check_time(url.get('id'))
+            if last_check_time:
+                last_check_time = last_check_time.strftime('%Y-%m-%d')
             else:
-                last_check = ''
+                last_check_time = ''
+
+            last_check_code = url_check_repo.get_last_check_code(url.get('id'))
+            if not last_check_code:
+                last_check_code = ''
 
             site = {
                 'id': url['id'],
                 'site': url['url'],
-                'last_check': last_check,
-                'code': '',
+                'last_check': last_check_time,
+                'code': last_check_code,
             }
             sites.append(site)
         return render_template(
