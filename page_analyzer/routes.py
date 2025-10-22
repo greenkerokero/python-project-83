@@ -7,7 +7,7 @@ from flask import (
     url_for,
 )
 from urllib.parse import urlparse
-from requests import get
+from requests import get as get_request
 from page_analyzer.validator import validate
 from page_analyzer.repository import UrlRepository, UrlCheckRepository
 
@@ -86,8 +86,12 @@ def init_routes(app):
 
     @app.post('/urls/<id>/checks')
     def urls_check(id):
+        saved_url = url_repo.find(id).get('url')
+        print(saved_url)
+        response_code = get_request(saved_url).status_code
         check = {
             'url_id': id,
+            'status_code': response_code
         }
         url_check_repo.save(check)
         flash('Страница успешно проверена', 'success')
