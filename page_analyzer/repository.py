@@ -93,7 +93,7 @@ class UrlCheckRepository(BaseRepository):
             return row['created_at']
         return None
 
-    def get_last_check_time_code(self, url_id):
+    def get_last_check_code(self, url_id):
         row = self._get_last_check(url_id)
         if row and row['status_code']:
             return row['status_code']
