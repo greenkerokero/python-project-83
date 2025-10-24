@@ -88,24 +88,18 @@ class UrlCheckRepository(BaseRepository):
                 return [dict(row) for row in cur]
 
     def get_last_check_time(self, url_id):
-        with self.get_connection() as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute(
-                    '''
-                    SELECT *
-                    FROM url_checks
-                    WHERE url_id = %s
-                    ORDER BY created_at DESC
-                    LIMIT 1;
-                    ''',
-                    (url_id,),
-                )
-                row = cur.fetchone()
-                if row and row['created_at']:
-                    return row['created_at']
-                return None
+        row = self._get_last_check(url_id)
+        if row and row['created_at']:
+            return row['created_at']
+        return None
 
-    def get_last_check_code(self, url_id):
+    def get_last_check_time_code(self, url_id):
+        row = self._get_last_check(url_id)
+        if row and row['status_code']:
+            return row['status_code']
+        return None
+
+    def _get_last_check(self, url_id):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
@@ -119,9 +113,7 @@ class UrlCheckRepository(BaseRepository):
                     (url_id,),
                 )
                 row = cur.fetchone()
-                if row and row['status_code']:
-                    return row['status_code']
-                return None
+                return row
 
     def save(self, url_checks):
         with self.get_connection() as conn:
