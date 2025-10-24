@@ -7,6 +7,7 @@ from flask import (
     url_for,
 )
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 from requests import get as get_request
 from page_analyzer.validator import validate
 from page_analyzer.repository import UrlRepository, UrlCheckRepository
@@ -92,10 +93,17 @@ def init_routes(app):
     def urls_check(id):
         saved_url = url_repo.find(id).get('url')
         print(saved_url)
-        response_code = get_request(saved_url).status_code
+        url_response = get_request(saved_url)
+        response_code = url_response.status_code
+        page_content = BeautifulSoup(url_response.text)
+        h1 = page_content.find('h1').text
+        title = page_content.find('title').text
+
         check = {
             'url_id': id,
-            'status_code': response_code
+            'status_code': response_code,
+            'h1': h1,
+            'title': title,
         }
         url_check_repo.save(check)
         flash('Страница успешно проверена', 'success')
