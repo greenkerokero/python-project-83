@@ -20,11 +20,11 @@
                 <td>{{ url['id'] }}</td>
                 <td>
                   <a href="{{ url_for('urls_show', id=url['id']) }}">
-                    {{ url['site'] }}
+                    {{ url.get('site') }}
                   </a>
                 </td>
-                <td>{{ url['last_check'] }}</td>
-                <td>{{ url['code'] }}</td>
+                <td>{{ url.get('last_check') }}</td>
+                <td>{{ url.get('code') }}</td>
               </tr>
             {% endfor %}
           </tbody>
