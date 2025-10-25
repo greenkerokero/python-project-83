@@ -104,7 +104,7 @@ def init_routes(app):
         title_text = title.text if title else ''
 
         meta_tag = page_content.find('meta', attrs={'name': 'description'})
-        description = meta_tag['content'] if title else ''
+        description = meta_tag['content'] if meta_tag else ''
 
         check = {
             'url_id': id,
