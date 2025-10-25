@@ -92,19 +92,28 @@ def init_routes(app):
     @app.post('/urls/<id>/checks')
     def urls_check(id):
         saved_url = url_repo.find(id).get('url')
-        print(saved_url)
+
         url_response = get_request(saved_url)
         response_code = url_response.status_code
-        page_content = BeautifulSoup(url_response.text)
-        h1 = page_content.find('h1').text
-        title = page_content.find('title').text
+        page_content = BeautifulSoup(url_response.text, features="html.parser")
+
+        h1 = page_content.find('h1')
+        h1_text = h1.text if h1 else ''
+
+        title = page_content.find('title')
+        title_text = title.text if title else ''
+
+        meta_tag = page_content.find('meta', attrs={'name': 'description'})
+        description = meta_tag['content'] if title else ''
 
         check = {
             'url_id': id,
             'status_code': response_code,
-            'h1': h1,
-            'title': title,
+            'h1': h1_text,
+            'title': title_text,
+            'description': description,
         }
         url_check_repo.save(check)
+
         flash('Страница успешно проверена', 'success')
         return redirect(url_for('urls_show', id=id))
