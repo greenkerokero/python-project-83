@@ -54,11 +54,18 @@ def init_routes(app):
         messages = get_flashed_messages(with_categories=True)
         url = url_repo.find(id)
         checks = url_check_repo.find_by_url_id(id)
+
+        alert_classes = {
+            'success': 'success',
+            'info': 'info',
+            'danger': 'danger'
+        }
         return render_template(
             'urls/show.html',
             url=url,
             checks=checks,
             messages=messages,
+            alert_classes=alert_classes,
         )
 
     @app.post('/urls')
@@ -67,12 +74,18 @@ def init_routes(app):
         url = form_data['url']
         errors = validate(url)
         if errors:
-            flash('Некорректный URL', 'fail')
+            flash('Некорректный URL', 'danger')
             messages = get_flashed_messages(with_categories=True)
+            alert_classes = {
+                'success': 'success',
+                'info': 'info',
+                'danger': 'danger'
+            }
             return render_template(
                 'index.html',
                 url=url,
                 messages=messages,
+                alert_classes=alert_classes,
             )
 
         scheme = urlparse(url).scheme
@@ -96,7 +109,7 @@ def init_routes(app):
         if 'error' in check_result:
             flash(
                 f'Не удалось проверить старницу: "{check_result['error']}"',
-                'fail'
+                'danger'
             )
         else:
             check_data = {
