@@ -16,6 +16,12 @@ def init_routes(app):
     url_repo = UrlRepository(app.config['DATABASE_URL'])
     url_check_repo = UrlCheckRepository(app.config['DATABASE_URL'])
 
+    alert_classes = {
+        'success': 'success',
+        'info': 'info',
+        'danger': 'danger'
+    }
+
     @app.get('/')
     def index():
         return render_template(
@@ -55,11 +61,6 @@ def init_routes(app):
         url = url_repo.find(id)
         checks = url_check_repo.find_by_url_id(id)
 
-        alert_classes = {
-            'success': 'success',
-            'info': 'info',
-            'danger': 'danger'
-        }
         return render_template(
             'urls/show.html',
             url=url,
@@ -70,17 +71,12 @@ def init_routes(app):
 
     @app.post('/urls')
     def urls_post():
-        form_data = request.form.to_dict()  # {'url': 'https://ya.ru'}
+        form_data = request.form.to_dict()
         url = form_data['url']
         errors = validate(url)
         if errors:
             flash('Некорректный URL', 'danger')
             messages = get_flashed_messages(with_categories=True)
-            alert_classes = {
-                'success': 'success',
-                'info': 'info',
-                'danger': 'danger'
-            }
             return render_template(
                 'index.html',
                 url=url,
