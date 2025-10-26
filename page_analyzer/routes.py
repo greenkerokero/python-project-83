@@ -6,8 +6,7 @@ from flask import (
     redirect,
     url_for,
 )
-from urllib.parse import urlparse
-from page_analyzer.validator import validate
+from page_analyzer.services import validate, normalize
 from page_analyzer.checker import check
 from page_analyzer.repository import UrlRepository, UrlCheckRepository
 
@@ -72,7 +71,8 @@ def init_routes(app):
     @app.post('/urls')
     def urls_post():
         form_data = request.form.to_dict()
-        url = form_data['url']
+        url = normalize(form_data['url'])
+
         errors = validate(url)
         if errors:
             flash('Некорректный URL', 'danger')
@@ -84,15 +84,12 @@ def init_routes(app):
                 alert_classes=alert_classes,
             )
 
-        scheme = urlparse(url).scheme
-        netloc = urlparse(url).netloc
-        form_data['url'] = f'{scheme}://{netloc}'
-
         existing_url = url_repo.find_by_url(url)
         if existing_url:
             flash('Страница уже существует', 'info')
             return redirect(url_for('urls_show', id=existing_url['id']))
 
+        form_data['url'] = url
         id = url_repo.save(form_data)
         flash('Страница успешно добавлена', 'success')
         return redirect(url_for('urls_show', id=id))
