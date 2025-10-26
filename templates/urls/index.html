@@ -17,9 +17,9 @@
           <tbody>
             {% for url in urls %}
               <tr>
-                <td>{{ url['id'] }}</td>
+                <td>{{ url.get('id') }}</td>
                 <td>
-                  <a href="{{ url_for('urls_show', id=url['id']) }}">
+                  <a href="{{ url_for('urls_show', id=url.get('id')) }}">
                     {{ url.get('site') }}
                   </a>
                 </td>
