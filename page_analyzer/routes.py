@@ -92,12 +92,18 @@ def init_routes(app):
     def urls_check(id):
         saved_url = url_repo.find(id).get('url')
 
-        check_result = {
-            'url_id': id,
-        }
-        check_result.update(check(saved_url))
+        check_result = check(saved_url)
+        if 'error' in check_result:
+            flash(
+                f'Не удалось проверить старницу: "{check_result['error']}"',
+                'fail'
+            )
+        else:
+            check_data = {
+                'url_id': id,
+            }
+            check_data.update(check_result)
+            url_check_repo.save(check_data)
+            flash('Страница успешно проверена', 'success')
 
-        url_check_repo.save(check_result)
-
-        flash('Страница успешно проверена', 'success')
         return redirect(url_for('urls_show', id=id))
