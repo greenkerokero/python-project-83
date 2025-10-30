@@ -4,8 +4,6 @@ from requests import (
     ConnectionError,
     HTTPError,
     TooManyRedirects,
-    ConnectTimeout,
-    ReadTimeout,
     Timeout,
 )
 
