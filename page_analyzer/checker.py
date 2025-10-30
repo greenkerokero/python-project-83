@@ -19,7 +19,7 @@ def check(url):
         return {'error': f'HTTP ошибка: {e.response.status_code}'}
     except TooManyRedirects:
         return {'error': 'Слишком много перенаправлений'}
-    except (ConnectTimeout, ReadTimeout, Timeout):
+    except Timeout:
         return {'error': 'Время ожидания запроса истекло'}
     except Exception as e:
         return {'error': f'Непредвиденная ошибка: {e}'}
