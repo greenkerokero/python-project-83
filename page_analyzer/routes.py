@@ -6,7 +6,7 @@ from flask import (
     redirect,
     url_for,
 )
-from page_analyzer.services import validate, normalize
+from page_analyzer.services import validate, get_site_name
 from page_analyzer.checker import check
 from page_analyzer.repository import UrlRepository, UrlCheckRepository
 
@@ -71,7 +71,7 @@ def init_routes(app):
     @app.post('/urls')
     def urls_post():
         form_data = request.form.to_dict()
-        url = normalize(form_data['url'])
+        url = get_site_name(form_data['url'])
 
         errors = validate(url)
         if errors:
