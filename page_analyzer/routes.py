@@ -90,9 +90,9 @@ def init_routes(app):
             return redirect(url_for('urls_show', id=existing_url['id']))
 
         form_data['url'] = url
-        id = url_repo.save(form_data)
+        url_id = url_repo.save(form_data)
         flash('Страница успешно добавлена', 'success')
-        return redirect(url_for('urls_show', id=id))
+        return redirect(url_for('urls_show', id=url_id))
 
     @app.post('/urls/<id>/checks')
     def urls_check(id):
