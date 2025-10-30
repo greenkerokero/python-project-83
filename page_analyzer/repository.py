@@ -68,10 +68,10 @@ class UrlRepository(BaseRepository):
                     'INSERT INTO urls (url) VALUES (%s) RETURNING id',
                     (url['url'],),
                 )
-                id = cur.fetchone()[0]
-                url['id'] = id
+                url_id = cur.fetchone()[0]
+                url['id'] = url_id
             conn.commit()
-            return id
+            return url_id
 
 
 class UrlCheckRepository(BaseRepository):
@@ -133,7 +133,7 @@ class UrlCheckRepository(BaseRepository):
                         url_checks.get('description'),
                     ),
                 )
-                id = cur.fetchone()[0]
-                url_checks['id'] = id
+                url_id = cur.fetchone()[0]
+                url_checks['id'] = url_id
             conn.commit()
-            return id
+            return url_id
