@@ -100,7 +100,9 @@ def init_routes(app):
 
         check_result = check(saved_url)
         if 'error' in check_result:
-            flash('Произошла ошибка при проверке', 'danger')
+            flash(
+                'Произошла ошибка при проверке', 'danger'
+            )
         else:
             check_data = {
                 'url_id': id,
