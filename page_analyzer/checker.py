@@ -11,6 +11,7 @@ from requests import (
 def check(url):
     try:
         url_response = get_request(url, timeout=5)
+        url_response.raise_for_status()
     except ConnectionError:
         return {'error': 'Ошибка подключения'}
     except HTTPError as e:
@@ -32,7 +33,10 @@ def check(url):
         title_text = title.text if title else ''
 
         meta_tag = page_content.find('meta', attrs={'name': 'description'})
-        description = meta_tag['content'] if meta_tag else ''
+        if meta_tag and meta_tag.get('content'):
+            description = meta_tag.get('content')
+        else:
+            description = ''
 
         return {
                 'status_code': response_code,
