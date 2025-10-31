@@ -82,7 +82,7 @@ def init_routes(app):
                 url=url,
                 messages=messages,
                 alert_classes=alert_classes,
-            )
+            ), 422
 
         existing_url = url_repo.find_by_url(url)
         if existing_url:
