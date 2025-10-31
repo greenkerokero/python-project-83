@@ -10,7 +10,7 @@ from requests import (
 
 def check(url):
     try:
-        url_response = get_request(url)
+        url_response = get_request(url, timeout=5)
     except ConnectionError:
         return {'error': 'Ошибка подключения'}
     except HTTPError as e:
