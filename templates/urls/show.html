@@ -33,7 +33,7 @@
   </div>
 
   <h2 class="mt-5 mb-3">Проверки</h2>
-  <form method="post" action="{{ url_for('urls_check', id=url.get('id')) }}">
+  <form method="post" action="{{ url_for('urls.urls_check', id=url.get('id')) }}">
     <input type="submit" class="btn btn-primary" value="Запустить проверку">
   </form>
     
