@@ -16,8 +16,7 @@ You can view application at the [provided link](https://python-project-83-0ff4.o
 - PostgreSQL
 
 ## Installation
-For installation [UV package manager](https://docs.astral.sh/uv/getting-started/installation/) is required
-After installing UV, clone the repository:
+For installation [UV package manager](https://docs.astral.sh/uv/getting-started/installation/) is required. After installing UV, clone the repository:
 ```
 git clone https://github.com/greenkerokero/python-project-83.git
 ```
@@ -26,9 +25,9 @@ Go to the project folder:
 cd python-project-83
 ```
 Install dependencies using UV:
-````
+```
 make install
-````
+```
 In the root of the project, create a *.env* file with your key values and database access:
 ```
 export SECRET_KEY=your_key_for_flask_app
