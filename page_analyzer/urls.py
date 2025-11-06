@@ -9,7 +9,7 @@ from flask import (
     current_app
 )
 from page_analyzer.services import validate, get_site_name
-from page_analyzer.checker import check
+from page_analyzer.parser import parse
 
 
 bp = Blueprint('urls', __name__)
@@ -106,7 +106,7 @@ def urls_check(id):
 
     saved_url = url_repo.find(id).get('url')
 
-    check_result = check(saved_url)
+    check_result = parse(saved_url)
     if 'error' in check_result:
         flash(
             'Произошла ошибка при проверке', 'danger'

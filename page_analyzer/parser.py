@@ -8,7 +8,7 @@ from requests import (
 )
 
 
-def check(url):
+def parse(url):
     try:
         url_response = get_request(url, timeout=5)
         url_response.raise_for_status()
