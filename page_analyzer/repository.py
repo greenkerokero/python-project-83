@@ -40,7 +40,7 @@ class UrlRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
-                    'SELECT * FROM urls WHERE url = %s',
+                    f'SELECT * FROM {self.table_name()} WHERE url = %s',
                     (url,),
                 )
                 return cur.fetchone()
@@ -55,7 +55,7 @@ class UrlRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    'UPDATE urls SET url = %s WHERE id = %s',
+                    f'UPDATE {self.table_name()} SET url = %s WHERE id = %s',
                     (url['url'], url['id']),
                 )
             conn.commit()
@@ -65,7 +65,12 @@ class UrlRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    'INSERT INTO urls (url) VALUES (%s) RETURNING id',
+                    f'''
+                    INSERT INTO {self.table_name()}
+                        (url)
+                    VALUES (%s)
+                    RETURNING id
+                    ''',
                     (url['url'],),
                 )
                 url_id = cur.fetchone()[0]
@@ -82,7 +87,7 @@ class UrlCheckRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
-                    'SELECT * FROM url_checks WHERE url_id = %s',
+                    f'SELECT * FROM {self.table_name()} WHERE url_id = %s',
                     (url_id,),
                 )
                 return [dict(row) for row in cur]
@@ -103,9 +108,9 @@ class UrlCheckRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
-                    '''
+                    f'''
                     SELECT *
-                    FROM url_checks
+                    FROM {self.table_name()}
                     WHERE url_id = %s
                     ORDER BY created_at DESC
                     LIMIT 1;
@@ -119,8 +124,8 @@ class UrlCheckRepository(BaseRepository):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    '''
-                    INSERT INTO url_checks
+                    f'''
+                    INSERT INTO {self.table_name()}
                         (url_id, status_code, h1, title, description)
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING id
