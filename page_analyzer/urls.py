@@ -29,23 +29,14 @@ def urls_get():
     urls = url_repo.get_all()
     sites = []
     for url in urls:
-        last_check_time = url_check_repo.get_last_check_time(url.get('id'))
-        if last_check_time:
-            last_check_time = last_check_time.strftime('%Y-%m-%d')
-        else:
-            last_check_time = ''
-
-        last_check_code = url_check_repo.get_last_check_code(url.get('id'))
-        if not last_check_code:
-            last_check_code = ''
-
+        last_check_data = url_check_repo.get_last_check_data(url.get('id'))
         site = {
             'id': url['id'],
             'site': url['url'],
-            'last_check': last_check_time,
-            'code': last_check_code,
         }
+        site.update(last_check_data)
         sites.append(site)
+
     return render_template(
         'urls/index.html',
         urls=sites,

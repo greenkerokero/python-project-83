@@ -94,15 +94,21 @@ class UrlCheckRepository(BaseRepository):
 
     def get_last_check_time(self, url_id):
         row = self._get_last_check(url_id)
-        if row and row['created_at']:
-            return row['created_at']
-        return None
+        return row.get('created_at').strftime('%Y-%m-%d') if row else ''
 
     def get_last_check_code(self, url_id):
         row = self._get_last_check(url_id)
-        if row and row['status_code']:
-            return row['status_code']
-        return None
+        return row.get('status_code') if row else ''
+
+    def get_last_check_data(self, url_id):
+        row = self._get_last_check(url_id) or {}
+        created_at = row.get('created_at', '')
+        if created_at:
+            created_at = created_at.strftime('%Y-%m-%d')
+        return {
+            'created_at': created_at,
+            'status_code': row.get('status_code', ''),
+        }
 
     def _get_last_check(self, url_id):
         with self.get_connection() as conn:
