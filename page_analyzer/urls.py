@@ -97,6 +97,10 @@ def urls_check(id):
 
     saved_url = url_repo.find(id).get('url')
 
+    if not saved_url:
+        flash('Произошла ошибка при проверке', 'danger')
+        return redirect(url_for('urls.urls_show', id=id))
+
     check_result = parse(saved_url)
     if 'error' in check_result:
         flash(
