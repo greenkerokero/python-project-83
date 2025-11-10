@@ -6,7 +6,8 @@ from flask import (
     redirect,
     url_for,
     Blueprint,
-    current_app
+    current_app,
+    abort
 )
 from page_analyzer.services import validate, get_site_name
 from page_analyzer.parser import parse
@@ -50,6 +51,10 @@ def urls_show(id):
 
     messages = get_flashed_messages(with_categories=True)
     url = url_repo.find(id)
+
+    if url is None:
+        abort(404)
+
     checks = url_check_repo.find_by_url_id(id)
 
     return render_template(
