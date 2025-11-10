@@ -21,7 +21,7 @@ ALERT_CLASSES = {
 }
 
 
-@bp.get('/urls')
+@bp.route('/urls')
 def urls_get():
     url_repo = current_app.url_repo
     url_check_repo = current_app.url_check_repo
@@ -43,7 +43,7 @@ def urls_get():
     )
 
 
-@bp.get('/urls/<id>')
+@bp.route('/urls/<id>')
 def urls_show(id):
     url_repo = current_app.url_repo
     url_check_repo = current_app.url_check_repo
@@ -61,7 +61,7 @@ def urls_show(id):
     )
 
 
-@bp.post('/urls')
+@bp.route('/urls', methods=['POST'])
 def urls_post():
     url_repo = current_app.url_repo
 
@@ -90,7 +90,7 @@ def urls_post():
     return redirect(url_for('urls.urls_show', id=url_id))
 
 
-@bp.post('/urls/<id>/checks')
+@bp.route('/urls/<id>/checks', methods=['POST'])
 def urls_check(id):
     url_repo = current_app.url_repo
     url_check_repo = current_app.url_check_repo
