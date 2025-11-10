@@ -100,7 +100,7 @@ def urls_check(id):
     check_result = parse(saved_url)
     if 'error' in check_result:
         flash(
-            'Произошла ошибка при проверке', 'danger'
+            check_result.get('error'), 'danger'
         )
     else:
         check_data = {
