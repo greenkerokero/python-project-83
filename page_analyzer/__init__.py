@@ -19,6 +19,9 @@ def create_app():
     app.url_repo = UrlRepository(app.config['DATABASE_URL'])
     app.url_check_repo = UrlCheckRepository(app.config['DATABASE_URL'])
 
+    from page_analyzer.errors import bp as errors_bp
+    app.register_blueprint(errors_bp)
+
     from page_analyzer.main import bp as main_bp
     app.register_blueprint(main_bp)
 
