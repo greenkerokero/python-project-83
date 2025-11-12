@@ -1,10 +1,14 @@
 from flask import Flask
 from os import getenv, path, mkdir, getpid
 from dotenv import load_dotenv
-from page_analyzer.repository import UrlRepository, UrlCheckRepository
 from logging import Formatter, INFO
 from logging.handlers import TimedRotatingFileHandler
 from uuid import uuid4
+from page_analyzer.repository import (
+    UrlRepository,
+    UrlCheckRepository,
+    UrlViewRepository,
+)
 
 load_dotenv()
 
@@ -25,6 +29,7 @@ def create_app():
 
     app.url_repo = UrlRepository(app.config['DATABASE_URL'])
     app.url_check_repo = UrlCheckRepository(app.config['DATABASE_URL'])
+    app.url_value_repo = UrlViewRepository(app.config['DATABASE_URL'])
 
     from page_analyzer.errors import bp as errors_bp
     app.register_blueprint(errors_bp)

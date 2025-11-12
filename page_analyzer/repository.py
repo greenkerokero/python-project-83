@@ -92,40 +92,6 @@ class UrlCheckRepository(BaseRepository):
                 )
                 return [dict(row) for row in cur]
 
-    def get_last_check_time(self, url_id):
-        row = self._get_last_check(url_id)
-        return row.get('created_at').strftime('%Y-%m-%d') if row else ''
-
-    def get_last_check_code(self, url_id):
-        row = self._get_last_check(url_id)
-        return row.get('status_code') if row else ''
-
-    def get_last_check_data(self, url_id):
-        row = self._get_last_check(url_id) or {}
-        created_at = row.get('created_at', '')
-        if created_at:
-            created_at = created_at.strftime('%Y-%m-%d')
-        return {
-            'created_at': created_at,
-            'status_code': row.get('status_code', ''),
-        }
-
-    def _get_last_check(self, url_id):
-        with self.get_connection() as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute(
-                    f'''
-                    SELECT *
-                    FROM {self.table_name()}
-                    WHERE url_id = %s
-                    ORDER BY created_at DESC
-                    LIMIT 1;
-                    ''',
-                    (url_id,),
-                )
-                row = cur.fetchone()
-                return row
-
     def save(self, url_checks):
         with self.get_connection() as conn:
             with conn.cursor() as cur:
@@ -148,3 +114,52 @@ class UrlCheckRepository(BaseRepository):
                 url_checks['id'] = url_id
             conn.commit()
             return url_id
+
+
+class UrlViewRepository:
+    def __init__(self, db_url):
+        self.db_url = db_url
+
+    def get_connection(self):
+        return connect(self.db_url)
+
+    def get_last_check_data(self):
+        with self.get_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(
+                    '''
+                    SELECT
+                        urls.id,
+                        urls.url,
+                        url_checks.created_at,
+                        url_checks.status_code
+                    FROM urls
+                    LEFT JOIN url_checks
+                        ON url_checks.url_id = urls.id
+                        AND url_checks.created_at = (
+                            SELECT MAX(created_at)
+                            FROM url_checks
+                            WHERE url_id = urls.id
+                        )
+                    ORDER BY urls.id DESC;
+                    '''
+                )
+                rows = [dict(row) for row in cur]
+
+        result = []
+
+        for row in rows:
+            created_at = row.get('created_at')
+            status_code = row.get('status_code')
+
+            if row['created_at']:
+                row['created_at'] = created_at.strftime('%Y-%m-%d')
+            else:
+                row['created_at'] = ''
+
+            if not status_code:
+                row['status_code'] = ''
+
+            result.append(row)
+
+        return result

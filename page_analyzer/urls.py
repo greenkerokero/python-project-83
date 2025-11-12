@@ -25,23 +25,12 @@ ALERT_CLASSES = {
 
 @bp.route('/urls')
 def urls_get():
-    url_repo = current_app.url_repo
-    url_check_repo = current_app.url_check_repo
-
-    urls = url_repo.get_all()
-    sites = []
-    for url in urls:
-        last_check_data = url_check_repo.get_last_check_data(url.get('id'))
-        site = {
-            'id': url['id'],
-            'site': url['url'],
-        }
-        site.update(last_check_data)
-        sites.append(site)
-
+    url_value_repo = current_app.url_value_repo
+    urls = url_value_repo.get_last_check_data()
+    print(urls)
     return render_template(
         'urls/index.html',
-        urls=sites,
+        urls=urls,
     )
 
 
