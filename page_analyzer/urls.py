@@ -9,6 +9,7 @@ from flask import (
     current_app,
     abort
 )
+from uuid import uuid4
 from page_analyzer.services import validate, get_site_name
 from page_analyzer.parser import parse
 
@@ -107,9 +108,14 @@ def urls_check(id):
         return redirect(url_for('urls.urls_show', id=id))
 
     check_result = parse(saved_url)
+    operation_id = str(uuid4())
     if 'error' in check_result:
         flash(
             'Произошла ошибка при проверке', 'danger'
+        )
+        current_app.logger.warning(
+            f'[Operation ID: {operation_id}] '
+            f'Не удалось проверить {saved_url}: {check_result.get('error')}'
         )
     else:
         check_data = {
