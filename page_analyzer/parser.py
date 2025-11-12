@@ -15,9 +15,14 @@ def parse(url):
     except ConnectionError:
         return {'error': 'Ошибка подключения'}
     except HTTPError as e:
-        return {'error': f'HTTP ошибка: {e.response.status_code}'}
+        return_code = e.response.status_code
+        return {
+            'error': f'HTTP ошибка, код ответа: {return_code}'
+            }
     except TooManyRedirects:
-        return {'error': 'Слишком много перенаправлений'}
+        return {
+            'error': 'Сайт выполнил переадресацию слишком много раз'
+            }
     except Timeout:
         return {'error': 'Время ожидания запроса истекло'}
     except Exception as e:
