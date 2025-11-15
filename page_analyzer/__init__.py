@@ -55,7 +55,9 @@ def create_app():
     app.logger.addHandler(file_handler)
 
     app.logger.setLevel(INFO)
-    app.logger.info(f'[Operation ID: {operation_id}] Page analyzer startup')
+    app.logger.info(
+        f'[Operation ID: {operation_id}] Анализатор страниц запущен'
+    )
 
     return app
 
