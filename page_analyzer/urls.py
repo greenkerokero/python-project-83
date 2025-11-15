@@ -10,7 +10,7 @@ from flask import (
     abort
 )
 from uuid import uuid4
-from page_analyzer.services import validate, get_site_name
+from page_analyzer.url_service import validate, get_site_name
 from page_analyzer.parser import parse
 
 
@@ -27,7 +27,6 @@ ALERT_CLASSES = {
 def urls_get():
     url_value_repo = current_app.url_value_repo
     urls = url_value_repo.get_last_check_data()
-    print(urls)
     return render_template(
         'urls/index.html',
         urls=urls,
