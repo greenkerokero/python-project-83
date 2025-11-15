@@ -90,17 +90,16 @@ def urls_check(id):
     url_check_repo = current_app.url_check_repo
 
     saved_url = url_repo.find(id).get('url')
+    operation_id = str(uuid4())
 
     if not saved_url:
         flash('Произошла ошибка при проверке', 'danger')
+        f'[Operation ID: {operation_id}] Передан пустой URL'
         return redirect(url_for('urls.urls_show', id=id))
 
     check_result = parse(saved_url)
-    operation_id = str(uuid4())
     if 'error' in check_result:
-        flash(
-            'Произошла ошибка при проверке', 'danger'
-        )
+        flash('Произошла ошибка при проверке', 'danger')
         current_app.logger.warning(
             f'[Operation ID: {operation_id}] '
             f'Не удалось проверить {saved_url}: {check_result.get('error')}'
