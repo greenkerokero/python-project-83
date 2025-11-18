@@ -1,12 +1,14 @@
-from flask import Flask
-from os import getenv, path, mkdir, getpid
-from dotenv import load_dotenv
-from logging import Formatter, INFO
+from logging import INFO, Formatter
 from logging.handlers import TimedRotatingFileHandler
+from os import getenv, getpid, mkdir, path
 from uuid import uuid4
+
+from dotenv import load_dotenv
+from flask import Flask
+
 from page_analyzer.repository import (
-    UrlRepository,
     UrlCheckRepository,
+    UrlRepository,
     UrlViewRepository,
 )
 

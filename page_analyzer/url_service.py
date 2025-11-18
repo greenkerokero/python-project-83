@@ -1,5 +1,6 @@
-from validators import url
 from urllib.parse import urlparse
+
+from validators import url
 
 
 def get_site_name(url_string):

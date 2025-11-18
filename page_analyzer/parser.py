@@ -1,11 +1,6 @@
 from bs4 import BeautifulSoup
-from requests import (
-    get as get_request,
-    ConnectionError,
-    HTTPError,
-    TooManyRedirects,
-    Timeout,
-)
+from requests import ConnectionError, HTTPError, Timeout, TooManyRedirects
+from requests import get as get_request
 
 
 def parse(url):

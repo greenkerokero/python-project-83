@@ -1,22 +1,23 @@
+from uuid import uuid4
+
 from flask import (
+    Blueprint,
+    abort,
+    current_app,
+    flash,
     get_flashed_messages,
+    redirect,
     render_template,
     request,
-    flash,
-    redirect,
     url_for,
-    Blueprint,
-    current_app,
-    abort
 )
-from uuid import uuid4
-from page_analyzer.url_service import (
-    validate,
-    get_site_name,
-    datatime_formater,
-)
-from page_analyzer.parser import parse
 
+from page_analyzer.parser import parse
+from page_analyzer.url_service import (
+    datatime_formater,
+    get_site_name,
+    validate,
+)
 
 bp = Blueprint('urls', __name__)
 

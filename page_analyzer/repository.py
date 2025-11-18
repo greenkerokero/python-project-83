@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 
