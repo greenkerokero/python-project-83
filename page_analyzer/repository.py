@@ -144,22 +144,4 @@ class UrlViewRepository:
                     ORDER BY urls.id DESC;
                     '''
                 )
-                rows = [dict(row) for row in cur]
-
-        result = []
-
-        for row in rows:
-            created_at = row.get('created_at')
-            status_code = row.get('status_code')
-
-            if row['created_at']:
-                row['created_at'] = created_at.strftime('%Y-%m-%d')
-            else:
-                row['created_at'] = ''
-
-            if not status_code:
-                row['status_code'] = ''
-
-            result.append(row)
-
-        return result
+                return [dict(row) for row in cur]

@@ -10,7 +10,11 @@ from flask import (
     abort
 )
 from uuid import uuid4
-from page_analyzer.url_service import validate, get_site_name
+from page_analyzer.url_service import (
+    validate,
+    get_site_name,
+    datatime_formater,
+)
 from page_analyzer.parser import parse
 
 
@@ -27,9 +31,20 @@ ALERT_CLASSES = {
 def urls_get():
     url_value_repo = current_app.url_value_repo
     urls = url_value_repo.get_last_check_data()
+
+    formated_urls = []
+
+    for url in urls:
+        url['created_at'] = datatime_formater(url.get('created_at'))
+
+        if not url.get('status_code'):
+            url['status_code'] = ''
+
+        formated_urls.append(url)
+
     return render_template(
         'urls/index.html',
-        urls=urls,
+        urls=formated_urls,
     )
 
 
@@ -43,6 +58,8 @@ def urls_show(id):
 
     if url is None:
         abort(404)
+
+    url['created_at'] = datatime_formater(url.get('created_at'))
 
     checks = url_check_repo.find_by_url_id(id)
 
